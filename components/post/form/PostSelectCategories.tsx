@@ -43,7 +43,7 @@ const PostSelectCategories = ({
   if (isError) return <PostSelectCategoriesError error={error} />;
 
   return (
-    <Select onValueChange={field.onChange} defaultValue={field.value}>
+    <Select required onValueChange={field.onChange} defaultValue={field.value}>
       <FormControl>
         <SelectTrigger>
           <SelectValue placeholder="Selectionner une catégorie" />

@@ -15,6 +15,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "../../ui/textarea";
 import PostSelectCategories from "./PostSelectCategories";
+import ApiService from "@/utils/api.service";
+import { useToast } from "@/components/ui/use-toast";
+import { useQueryClient } from "@tanstack/react-query";
 
 const formSchema = z.object({
   title: z.string().min(1).max(50),
@@ -32,6 +35,10 @@ const PostCreateForm = ({ children }: { children: React.ReactNode }) => {
     },
   });
 
+  const queryClient = useQueryClient();
+
+  const { toast } = useToast();
+
   const [characterCount, setCharacterCount] = useState(0);
 
   function handleContentChange(
@@ -43,8 +50,45 @@ const PostCreateForm = ({ children }: { children: React.ReactNode }) => {
     onChange(value);
   }
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    const isFormValid = await form.trigger();
+
+    if (!isFormValid) {
+      toast({
+        title: "Erreur",
+        description: "Le formulaire n'est pas valide !",
+        variant: "destructive",
+      });
+      throw new Error("Form is not valid");
+    }
+
+    try {
+      await ApiService.post({
+        path: "/posts",
+        body: values,
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: ["posts"],
+        exact: true,
+      });
+
+      form.reset();
+
+      setCharacterCount(0);
+
+      toast({
+        title: "Succès",
+        description: "Votre post a bien été créé !",
+      });
+    } catch (error) {
+      toast({
+        title: "Erreur",
+        description: "Une erreur est survenue lors de la création du post.",
+        variant: "destructive",
+      });
+      throw error;
+    }
   }
 
   return (
@@ -58,6 +102,7 @@ const PostCreateForm = ({ children }: { children: React.ReactNode }) => {
               <FormLabel>Titre du post</FormLabel>
               <FormControl>
                 <Input
+                  required
                   placeholder="Ecrire ici le titre de votre poste..."
                   {...field}
                 />
@@ -74,6 +119,7 @@ const PostCreateForm = ({ children }: { children: React.ReactNode }) => {
               <FormLabel>Contenu du post</FormLabel>
               <FormControl>
                 <Textarea
+                  required
                   placeholder="Ecrire ici le contenu de votre poste..."
                   {...field}
                   onChange={(event) =>

@@ -4,7 +4,8 @@ import { IPost } from "@/types";
 import ApiService from "@/utils/api.service";
 import { useQuery } from "@tanstack/react-query";
 import PostLoader from "./PostLoader";
-import PostListItem from "./PostListItem";
+import PostListItem from "./postListItem/PostListItem";
+import PostCreateModal from "./PostCreateModal";
 
 const PostsList = () => {
   const { data: posts, isLoading } = useQuery<IPost[]>({
@@ -22,13 +23,16 @@ const PostsList = () => {
           <PostLoader />
         </>
       ) : posts && posts.length > 0 ? (
-        <div>
-          {posts.map((post) => (
-            <PostListItem key={post.id} post={post} />
+        <>
+          {posts.map((post, index) => (
+            <PostListItem key={post.id} post={post} index={index} />
           ))}
-        </div>
+        </>
       ) : (
-        <p className="text-gray-500">Aucun poste trouvé</p>
+        <div className="flex items-center gap-3">
+          <p className="text-gray-500">Aucun poste trouvé</p>
+          <PostCreateModal />
+        </div>
       )}
     </div>
   );
