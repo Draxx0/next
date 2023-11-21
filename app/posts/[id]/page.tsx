@@ -25,37 +25,45 @@ const Post = ({
   });
 
   return (
-    <div className="max-w-[80%] mx-auto py-10 space-y-10">
-      {isLoading ? (
-        <>
-          <div className="flex justify-between">
-            <Skeleton className="w-1/2 h-6 animate-pulse" />
-            <Skeleton className="w-1/4 h-6 animate-pulse" />
-          </div>
-          <Separator />
-        </>
-      ) : (
-        post && (
+    <>
+      <div className="animate-page-transition absolute inset-0 w-screen h-screen"></div>
+      <div className="max-w-[80%] mx-auto py-10 space-y-10">
+        {isLoading ? (
           <>
-            <Link href={"/posts"}>
-              <Button variant={"link"} className="px-0 flex items-center gap-3">
-                <LogOut size={15} className="rotate-180" />
-                Revenir aux posts
-              </Button>
-            </Link>
             <div className="flex justify-between">
-              <h1 className="text-xl font-bold text-black/80">{post.title}</h1>
-              <div className="flex items-center gap-3">
-                <p>{post.createdAt}</p>
-                <PostCategoryBadge category={post.category.name} />
-              </div>
+              <Skeleton className="w-1/2 h-6 animate-pulse" />
+              <Skeleton className="w-1/4 h-6 animate-pulse" />
             </div>
             <Separator />
-            <p>{post.content}</p>
           </>
-        )
-      )}
-    </div>
+        ) : (
+          post && (
+            <>
+              <Link href={"/posts"}>
+                <Button
+                  variant={"link"}
+                  className="px-0 flex items-center gap-3"
+                >
+                  <LogOut size={15} className="rotate-180" />
+                  Revenir aux posts
+                </Button>
+              </Link>
+              <div className="flex justify-between animate-fade-in">
+                <h1 className="text-xl font-bold text-black/80">
+                  {post.title}
+                </h1>
+                <div className="flex items-center gap-3">
+                  <p>{post.createdAt}</p>
+                  <PostCategoryBadge category={post.category.name} />
+                </div>
+              </div>
+              <Separator className="animate-fade-in" />
+              <p className="animate-fade-in">{post.content}</p>
+            </>
+          )
+        )}
+      </div>
+    </>
   );
 };
 

@@ -69,11 +69,21 @@ module.exports = {
           from: { opacity: 0, transform: "translateY(10px)" },
           to: { opacity: 1, transform: "translateY(0)" },
         },
+        "page-transition": {
+          from: { opacity: 1, background: "black", zIndex: 999 },
+          to: {
+            opacity: 0,
+            background: "transparent",
+            zIndex: -1,
+            display: "none",
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "fade-in": "fade-in 0.4s ease-in-out forwards",
+        "page-transition": "page-transition 1s ease-in-out forwards",
       },
     },
   },
