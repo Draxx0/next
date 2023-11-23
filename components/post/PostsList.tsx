@@ -12,6 +12,7 @@ const PostsList = () => {
     queryKey: ["posts"],
     queryFn: async () => ApiService.getAll<IPost>({ path: "posts" }),
     staleTime: 5 * 1000,
+    refetchOnWindowFocus: false,
   });
 
   return (

@@ -10,30 +10,27 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "../ui/button";
-import PostCreateForm from "./form/PostCreateForm";
+import CategoryCreateForm from "./form/CategoryCreateForm";
 
-const PostCreateModal = () => {
+const CategoryCreateModal = () => {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button id="#create-post" variant={"secondary"}>
-          Créer un post
-        </Button>
+        <Button variant={"secondary"}>Créer une catégorie</Button>
       </AlertDialogTrigger>
       <AlertDialogContent className="min-w-[60%]">
         <AlertDialogHeader>
-          <AlertDialogTitle>Créer un post</AlertDialogTitle>
+          <AlertDialogTitle>Créer une catégorie</AlertDialogTitle>
           <AlertDialogDescription>
-            Vous êtes sur le points de créer un post, assurez vous d&apos;avoir
-            renseigner tous les champs.
+            Vous êtes sur le points de créer une catégorie.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <div>
-          <PostCreateForm />
+          <CategoryCreateForm />
         </div>
       </AlertDialogContent>
     </AlertDialog>
   );
 };
 
-export default PostCreateModal;
+export default CategoryCreateModal;

@@ -80,6 +80,12 @@ export const DELETE = async (
 ) => {
   const { id } = params;
 
+  const deletedPosts = await prisma.post.deleteMany({
+    where: {
+      categoryId: +id,
+    },
+  });
+
   const category = await prisma.category.delete({
     where: {
       id: +id,
@@ -100,7 +106,10 @@ export const DELETE = async (
     status: 200,
     data: {
       message: "category have been deleted",
-      deletedData: category,
+      deletedData: {
+        categoryDeleted: category,
+        postsDeleted: deletedPosts,
+      },
     },
   });
 };

@@ -37,9 +37,7 @@ export default function RootLayout({
               </li>
             </ul>
           </nav>
-
           {children}
-          {/* <div className="relative z-10">{children}</div> */}
         </Providers>
         <Toaster />
       </body>

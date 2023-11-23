@@ -1,5 +1,5 @@
 "use client";
-import { useMemo, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -17,13 +17,9 @@ import { Textarea } from "../../ui/textarea";
 import PostSelectCategories from "./PostSelectCategories";
 import ApiService from "@/utils/api.service";
 import { useToast } from "@/components/ui/use-toast";
-import { useQueryClient } from "@tanstack/react-query";
-import {
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogFooter,
-} from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { IPost } from "@/types";
+import useDetectSpace from "@/hook/useDetectSpace";
 
 const formSchema = z.object({
   title: z.string().min(1).max(50),
@@ -31,7 +27,22 @@ const formSchema = z.object({
   categoryId: z.string().min(1),
 });
 
-const PostCreateForm = () => {
+const PostUpdateForm = ({
+  children,
+  post,
+}: {
+  children: React.ReactNode;
+  post: IPost;
+}) => {
+  const { data: currentPost, isLoading } = useQuery<IPost>({
+    queryKey: ["post", post.id],
+    queryFn: () => ApiService.getOne({ path: "posts", id: String(post.id) }),
+    enabled: !!post,
+    refetchOnWindowFocus: false,
+  });
+
+  useDetectSpace();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -41,11 +52,24 @@ const PostCreateForm = () => {
     },
   });
 
+  useEffect(() => {
+    if (!isLoading && currentPost) {
+      form.reset({
+        title: currentPost.title,
+        content: currentPost.content,
+        categoryId: String(currentPost.categoryId),
+      });
+      setCharacterCount(currentPost.content.length);
+    }
+  }, [isLoading, currentPost, form]);
+
   const queryClient = useQueryClient();
 
   const { toast } = useToast();
 
-  const [characterCount, setCharacterCount] = useState(0);
+  const [characterCount, setCharacterCount] = useState(
+    currentPost?.content.length || 0
+  );
 
   function handleContentChange(
     event: React.ChangeEvent<HTMLTextAreaElement>,
@@ -57,6 +81,8 @@ const PostCreateForm = () => {
   }
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    const isFormValid = await form.trigger();
+
     if (!isFormValid) {
       toast({
         title: "Erreur",
@@ -67,8 +93,9 @@ const PostCreateForm = () => {
     }
 
     try {
-      await ApiService.post({
+      await ApiService.update({
         path: "/posts",
+        id: String(post.id),
         body: values,
       });
 
@@ -83,21 +110,17 @@ const PostCreateForm = () => {
 
       toast({
         title: "Succès",
-        description: "Votre post a bien été créé !",
+        description: "Votre post a bien été modifié !",
       });
     } catch (error) {
       toast({
         title: "Erreur",
-        description: "Une erreur est survenue lors de la création du post.",
+        description: "Une erreur est survenue lors de la modification du post.",
         variant: "destructive",
       });
       throw error;
     }
   }
-
-  const isFormValid = useMemo(() => {
-    return form.formState.isValid;
-  }, [form.formState.isValid]);
 
   return (
     <Form {...form}>
@@ -167,26 +190,18 @@ const PostCreateForm = () => {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Catégorie</FormLabel>
-              <PostSelectCategories field={field} />
+              <PostSelectCategories
+                field={field}
+                defaultCategoryId={String(post.categoryId)}
+              />
               <FormMessage />
             </FormItem>
           )}
         />
-        <AlertDialogFooter>
-          <AlertDialogCancel>Retour</AlertDialogCancel>
-          {isFormValid ? (
-            <AlertDialogAction asChild>
-              <Button type="submit">Créer mon post</Button>
-            </AlertDialogAction>
-          ) : (
-            <Button type="submit" disabled>
-              Créer mon post
-            </Button>
-          )}
-        </AlertDialogFooter>
+        {children}
       </form>
     </Form>
   );
 };
 
-export default PostCreateForm;
+export default PostUpdateForm;

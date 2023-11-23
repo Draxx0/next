@@ -3,13 +3,13 @@ import PostCategoryBadge from "@/components/post/postListItem/PostCategoryBadge"
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
-import { IPost } from "@/types";
+import { ICategory, IPost } from "@/types";
 import ApiService from "@/utils/api.service";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { LogOut } from "lucide-react";
 
-const Post = ({
+const CategoryPostsList = ({
   params,
 }: {
   params: {
@@ -18,9 +18,9 @@ const Post = ({
 }) => {
   const { id } = params;
 
-  const { data: post, isLoading } = useQuery<IPost>({
-    queryKey: ["post", id],
-    queryFn: () => ApiService.getOne({ path: "posts", id }),
+  const { data: category, isLoading } = useQuery<ICategory>({
+    queryKey: ["categories", id],
+    queryFn: () => ApiService.getOne({ path: "categories", id }),
     enabled: !!id,
     refetchOnWindowFocus: false,
   });
@@ -38,28 +38,17 @@ const Post = ({
             <Separator />
           </>
         ) : (
-          post && (
+          category && (
             <>
-              <Link href={"/posts"}>
+              <Link href={"/categories"}>
                 <Button
                   variant={"link"}
                   className="px-0 flex items-center gap-3"
                 >
                   <LogOut size={15} className="rotate-180" />
-                  Revenir aux posts
+                  Revenir aux catégories
                 </Button>
               </Link>
-              <div className="flex justify-between animate-fade-in">
-                <h1 className="text-xl font-bold text-black/80">
-                  {post.title}
-                </h1>
-                <div className="flex items-center gap-3">
-                  <p>{post.createdAt}</p>
-                  <PostCategoryBadge category={post.category.name} />
-                </div>
-              </div>
-              <Separator className="animate-fade-in" />
-              <p className="animate-fade-in">{post.content}</p>
             </>
           )
         )}
@@ -68,4 +57,4 @@ const Post = ({
   );
 };
 
-export default Post;
+export default CategoryPostsList;

@@ -14,9 +14,12 @@ import { useQuery } from "@tanstack/react-query";
 import { ControllerRenderProps } from "react-hook-form";
 import PostSelectCategoriesLoader from "./PostSelectCategoriesLoader";
 import PostSelectCategoriesError from "./PostSelectCategoriesError";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 const PostSelectCategories = ({
   field,
+  defaultCategoryId,
 }: {
   field: ControllerRenderProps<
     {
@@ -26,43 +29,56 @@ const PostSelectCategories = ({
     },
     "categoryId"
   >;
+  defaultCategoryId?: string;
 }) => {
   const {
     data: categories,
     isLoading,
     isError,
-    error,
   } = useQuery<ICategory[]>({
     queryKey: ["categories"],
     queryFn: async () => ApiService.getAll<ICategory>({ path: "categories" }),
     staleTime: 5 * 1000,
+    refetchOnWindowFocus: false,
   });
 
   if (isLoading) return <PostSelectCategoriesLoader />;
 
-  if (isError) return <PostSelectCategoriesError error={error} />;
+  if (isError) return <PostSelectCategoriesError />;
 
   return (
-    <Select required onValueChange={field.onChange} defaultValue={field.value}>
-      <FormControl>
-        <SelectTrigger>
-          <SelectValue placeholder="Selectionner une catégorie" />
-        </SelectTrigger>
-      </FormControl>
-      <SelectContent>
-        {categories && categories.length > 0 ? (
-          categories.map((category) => (
-            <SelectItem key={category.id} value={String(category.id)}>
-              {category.name}
-            </SelectItem>
-          ))
-        ) : (
-          <SelectItem value="" disabled>
-            Aucune catégorie trouvée
-          </SelectItem>
-        )}
-      </SelectContent>
-    </Select>
+    <>
+      {categories && categories.length > 0 ? (
+        <Select
+          required
+          onValueChange={field.onChange}
+          defaultValue={String(defaultCategoryId) || field.value}
+        >
+          <FormControl>
+            <SelectTrigger>
+              <SelectValue placeholder="Selectionner une catégorie" />
+            </SelectTrigger>
+          </FormControl>
+          <SelectContent>
+            {categories.map((category) => (
+              <SelectItem key={category.id} value={String(category.id)}>
+                {category.name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      ) : (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            {" "}
+            Aucune catégorie disponible
+          </p>
+          <Button>
+            <Link href={"/categories"}>Créer une catégorie</Link>
+          </Button>
+        </div>
+      )}
+    </>
   );
 };
 

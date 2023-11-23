@@ -10,11 +10,12 @@ import { Button } from "../../ui/button";
 import PostCategoryBadge from "./PostCategoryBadge";
 import Link from "next/link";
 import PostListItemContextMenu from "./PostListItemContextMenu";
+import { useMemo } from "react";
 
 const PostListItem = ({ post, index }: { post: IPost; index: number }) => {
-  const animationDelay = index * 100;
+  const animationDelay = useMemo(() => index * 100, [index]);
   return (
-    <PostListItemContextMenu postId={String(post.id)}>
+    <PostListItemContextMenu post={post}>
       <Card
         className={`min-h-[400px] flex flex-col justify-between border-neutral-200 opacity-0 animate-fade-in`}
         style={{ animationDelay: `${animationDelay}ms` }}
@@ -29,7 +30,7 @@ const PostListItem = ({ post, index }: { post: IPost; index: number }) => {
             </div>
           </CardHeader>
           <CardContent>
-            <CardDescription>
+            <CardDescription className="break-words">
               <span>
                 {post.content.length > 500 ? (
                   <>

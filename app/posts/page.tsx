@@ -1,6 +1,5 @@
 import PostCreateModal from "@/components/post/PostCreateModal";
 import PostsList from "@/components/post/PostsList";
-import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 const PostListPage = async () => {
   return (

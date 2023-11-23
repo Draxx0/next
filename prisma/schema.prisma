@@ -18,8 +18,8 @@ model Post {
   content   String?
 
   // RELATION WITH CATEGORY
-  category Category @relation(fields: [categoryId], references: [id])
-  categoryId Int
+  category Category? @relation(fields: [categoryId], references: [id])
+  categoryId Int?
 }
 
 model  Category {
