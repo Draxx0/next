@@ -1,10 +1,21 @@
+import Link from "next/link";
 import { Badge } from "../../ui/badge";
+import { ICategory } from "@/types";
 
-const PostCategoryBadge = ({ category }: { category: string }) => {
+const PostCategoryBadge = ({
+  category,
+}: {
+  category: Omit<ICategory, "posts">;
+}) => {
   return (
-    <Badge className="whitespace-nowrap" variant="outline">
-      {category}
-    </Badge>
+    <Link href={`/categories/${category.id}`} className="group">
+      <Badge
+        className="whitespace-nowrap group-hover:bg-gray-900 group-hover:text-white cursor-pointer"
+        variant="outline"
+      >
+        {category.name}
+      </Badge>
+    </Link>
   );
 };
 
