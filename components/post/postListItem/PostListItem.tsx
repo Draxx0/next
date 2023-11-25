@@ -25,9 +25,7 @@ const PostListItem = ({ post, index }: { post: IPost; index: number }) => {
           <CardHeader>
             <div className="flex items-start justify-between w-full">
               <div className="space-y-1">
-                <h2 className="text-lg max-w-[75%] font-semibold">
-                  {post.title}
-                </h2>
+                <h2 className="text-lg font-semibold">{post.title}</h2>
                 <p className="text-xs text-muted-foreground">
                   {formatDate(post.createdAt, "short")}
                 </p>
@@ -35,16 +33,24 @@ const PostListItem = ({ post, index }: { post: IPost; index: number }) => {
               <PostCategoryBadge category={post.category} />
             </div>
           </CardHeader>
-          <CardContent>
+          <CardContent className=" max-h-[230px] overflow-y-scroll">
             <CardDescription className="break-words">
               <span>
                 {post.content.length > 500 ? (
                   <>
-                    {post.content.slice(0, 600)}
+                    <span
+                      dangerouslySetInnerHTML={{
+                        __html: post.content.slice(0, 600),
+                      }}
+                    />
                     <span className="text-gray-500">...</span>
                   </>
                 ) : (
-                  post.content
+                  <span
+                    dangerouslySetInnerHTML={{
+                      __html: post.content,
+                    }}
+                  />
                 )}
               </span>
             </CardDescription>

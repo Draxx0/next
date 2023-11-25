@@ -6,14 +6,12 @@ import * as z from "zod";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "../../ui/textarea";
 import PostSelectCategories from "./PostSelectCategories";
 import ApiService from "@/utils/api.service";
 import { useToast } from "@/components/ui/use-toast";
@@ -24,10 +22,11 @@ import {
   AlertDialogFooter,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import Tiptap from "@/components/common/Tiptap";
 
 const formSchema = z.object({
   title: z.string().min(1).max(50),
-  content: z.string().min(1).max(500),
+  content: z.string().min(1).max(2000),
   categoryId: z.string().min(1),
 });
 
@@ -41,20 +40,11 @@ const PostCreateForm = () => {
     },
   });
 
+  const [characterCount, setCharacterCount] = useState(0);
+
   const queryClient = useQueryClient();
 
   const { toast } = useToast();
-
-  const [characterCount, setCharacterCount] = useState(0);
-
-  function handleContentChange(
-    event: React.ChangeEvent<HTMLTextAreaElement>,
-    onChange: (value: string) => void
-  ) {
-    const { value } = event.target;
-    setCharacterCount(value.length);
-    onChange(value);
-  }
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     if (!isFormValid) {
@@ -126,37 +116,12 @@ const PostCreateForm = () => {
             <FormItem>
               <FormLabel>Contenu du post</FormLabel>
               <FormControl>
-                <Textarea
-                  required
-                  placeholder="Ecrire ici le contenu de votre poste..."
-                  {...field}
-                  onChange={(event) =>
-                    handleContentChange(event, field.onChange)
-                  }
+                <Tiptap
+                  characterCount={characterCount}
+                  setCharacterCount={setCharacterCount}
+                  onChange={(content) => field.onChange(content)}
                 />
               </FormControl>
-              <div className="flex justify-between items-center">
-                <FormDescription>
-                  Assurez-vous d&apos;avoir écrit moins de 500 caractères.
-                </FormDescription>
-                {characterCount > 0 ? (
-                  <div className="flex items-baseline gap-2 text-xs">
-                    <span className=" text-black/50">Caractères</span>
-                    <span
-                      className={` ${
-                        characterCount > 400
-                          ? "text-red-500/50"
-                          : characterCount > 200
-                          ? "text-yellow-500/50"
-                          : "text-black/50"
-                      }`}
-                    >
-                      {characterCount}/500
-                    </span>
-                  </div>
-                ) : null}
-              </div>
-
               <FormMessage />
             </FormItem>
           )}
