@@ -40,10 +40,10 @@ const CategoryListItem = ({
           <div className="space-y-4">
             {category.posts.length > 0 ? (
               <>
-                <span>Les 3 derniers postes de cette catégorie :</span>
+                <span>3 postes de cette catégorie :</span>
 
                 <ul className="space-y-2">
-                  {category.posts.map((post) => (
+                  {category.posts.slice(0, 3).map((post) => (
                     <li key={post.id} className="underline">
                       - <Link href={`/posts/${post.id}`}>{post.title}</Link>
                     </li>
