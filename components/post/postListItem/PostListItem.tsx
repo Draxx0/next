@@ -29,10 +29,10 @@ const PostListItem = ({ post, index }: { post: IPost; index: number }) => {
                   {post.title}
                 </h2>
                 <p className="text-xs text-muted-foreground">
-                  {formatDate(post.createdAt)}
+                  {formatDate(post.createdAt, "short")}
                 </p>
               </div>
-              <PostCategoryBadge category={post.category.name} />
+              <PostCategoryBadge category={post.category} />
             </div>
           </CardHeader>
           <CardContent>
