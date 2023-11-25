@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
+import sanitizeHtml from "sanitize-html";
 
 const prisma = new PrismaClient();
 
@@ -19,12 +20,12 @@ export const GET = async (
           category: true,
         },
         orderBy: {
-          createdAt: orderBy,
+          createdAt: orderBy || "desc",
         },
       })
     : await prisma.post.findMany({
         orderBy: {
-          createdAt: orderBy,
+          createdAt: orderBy || "desc",
         },
         include: {
           category: true,
@@ -52,10 +53,12 @@ export const POST = async (
 
   const { title, content, categoryId } = body;
 
+  const sanitizedContent = sanitizeHtml(content);
+
   const newPost = await prisma.post.create({
     data: {
       title,
-      content,
+      content: sanitizedContent,
       categoryId: +categoryId,
     },
   });

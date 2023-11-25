@@ -56,11 +56,16 @@ const Post = ({
                 </h1>
                 <div className="flex items-center gap-3">
                   <p>Publié le {formatDate(post.createdAt)}</p>
-                  <PostCategoryBadge category={post.category.name} />
+                  <PostCategoryBadge category={post.category} />
                 </div>
               </div>
               <Separator className="animate-fade-in" />
-              <p className="animate-fade-in">{post.content}</p>
+              <div
+                className="animate-fade-in"
+                dangerouslySetInnerHTML={{
+                  __html: post.content,
+                }}
+              ></div>
             </>
           )
         )}

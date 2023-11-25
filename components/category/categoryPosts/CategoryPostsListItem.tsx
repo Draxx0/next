@@ -35,7 +35,24 @@ const CategoryPostsListItem = ({
         </CardHeader>
         <CardContent>
           <CardDescription className="break-words">
-            <span>{post.content}</span>
+            <span>
+              {post.content.length > 500 ? (
+                <>
+                  <span
+                    dangerouslySetInnerHTML={{
+                      __html: post.content.slice(0, 600),
+                    }}
+                  />
+                  <span className="text-gray-500">...</span>
+                </>
+              ) : (
+                <span
+                  dangerouslySetInnerHTML={{
+                    __html: post.content,
+                  }}
+                />
+              )}
+            </span>
           </CardDescription>
         </CardContent>
       </div>
