@@ -1,11 +1,8 @@
 "use client";
 
-import { ICategory, IPost } from "@/types";
+import { ICategory } from "@/types";
 import ApiService from "@/utils/api.service";
 import { useQuery } from "@tanstack/react-query";
-import PostLoader from "./PostLoader";
-import PostListItem from "./postListItem/PostListItem";
-import PostCreateModal from "./PostCreateModal";
 import CategoryLoader from "./CategoryLoader";
 import CategoryListItem from "./CategoryListItem";
 import CategoryCreateModal from "./CategoryCreateModal";
