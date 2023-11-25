@@ -30,3 +30,8 @@ interface TimeStamp {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface Query {
+  orderBy?: "asc" | "desc";
+  categoryId?: string;
+}

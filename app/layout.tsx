@@ -22,19 +22,19 @@ export default function RootLayout({
     <html lang="fr">
       <body className={inter.className}>
         <Providers>
-          <nav className="fixed top-1/2 rounded-full px-3 py-8 -translate-y-1/2 right-10 z-10 bg-primary animate-fade-in">
-            <ul className="text-white gap-6 flex flex-col justify-around items-center">
-              <li className="p-2 hover:bg-gray-200 rounded-full group transition-all ease-in-out duration-300">
-                <Link href="/posts">
+          <nav className="fixed top-4 rounded-full py-3 px-8 -translate-x-1/2 left-1/2 z-10 bg-primary animate-fade-in">
+            <ul className="text-white gap-6 flex justify-around items-center">
+              <Link href="/posts">
+                <li className="p-2 hover:bg-gray-200 rounded-full group transition-all ease-in-out duration-300">
                   <BookText className="group-hover:text-primary" />
-                </Link>
-              </li>
+                </li>
+              </Link>
 
-              <li className="p-2 hover:bg-gray-200 rounded-full group transition-all ease-in-out duration-300">
-                <Link href="/categories">
+              <Link href="/categories">
+                <li className="p-2 hover:bg-gray-200 rounded-full group transition-all ease-in-out duration-300">
                   <Layers3 className="group-hover:text-primary" />
-                </Link>
-              </li>
+                </li>
+              </Link>
             </ul>
           </nav>
           {children}

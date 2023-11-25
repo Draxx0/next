@@ -9,12 +9,12 @@ export const GET = async (
 ): Promise<NextResponse> => {
   const { id } = params;
 
-  const category = await prisma.category.findUniqueOrThrow({
-    include: {
-      posts: true,
-    },
+  const category = await prisma.category.findUnique({
     where: {
       id: +id,
+    },
+    include: {
+      posts: true,
     },
   });
 

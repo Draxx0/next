@@ -8,6 +8,7 @@ import ApiService from "@/utils/api.service";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { LogOut } from "lucide-react";
+import { formatDate } from "@/utils/functions/formatDate";
 
 const Post = ({
   params,
@@ -54,7 +55,7 @@ const Post = ({
                   {post.title}
                 </h1>
                 <div className="flex items-center gap-3">
-                  <p>{post.createdAt}</p>
+                  <p>Publié le {formatDate(post.createdAt)}</p>
                   <PostCategoryBadge category={post.category.name} />
                 </div>
               </div>

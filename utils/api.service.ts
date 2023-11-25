@@ -1,6 +1,24 @@
-const getAll = async <T>({ path }: { path: string }): Promise<T[]> => {
+import { Query } from "@/types";
+
+const getAll = async <T>({
+  path,
+  query,
+}: {
+  path: string;
+  query?: Query;
+}): Promise<T[]> => {
   try {
-    const response = await fetch(`http://localhost:3000/api/${path}`);
+    const { orderBy, categoryId } = query ?? {
+      orderBy: "desc",
+      categoryId: "",
+    };
+
+    const urlWithCategoryId = `http://localhost:3000/api/${path}?orderBy=${orderBy}&categoryId=${categoryId}`;
+    const urlWithoutCategoryId = `http://localhost:3000/api/${path}?orderBy=${orderBy}`;
+
+    const response = await fetch(
+      categoryId ? urlWithCategoryId : urlWithoutCategoryId
+    );
 
     if (!response.ok) throw new Error("Error fetching data");
 
@@ -15,12 +33,18 @@ const getAll = async <T>({ path }: { path: string }): Promise<T[]> => {
 const getOne = async <T>({
   path,
   id,
+  query,
 }: {
   path: string;
   id: string;
+  query?: Query;
 }): Promise<T> => {
   try {
-    const response = await fetch(`http://localhost:3000/api/${path}/${id}`);
+    const { orderBy } = query ?? { orderBy: "desc" };
+
+    const response = await fetch(
+      `http://localhost:3000/api/${path}/${id}?orderBy=${orderBy}`
+    );
 
     if (!response.ok) throw new Error("Error fetching data");
 

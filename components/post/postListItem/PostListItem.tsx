@@ -11,6 +11,7 @@ import PostCategoryBadge from "./PostCategoryBadge";
 import Link from "next/link";
 import PostListItemContextMenu from "./PostListItemContextMenu";
 import { useMemo } from "react";
+import { formatDate } from "@/utils/functions/formatDate";
 
 const PostListItem = ({ post, index }: { post: IPost; index: number }) => {
   const animationDelay = useMemo(() => index * 100, [index]);
@@ -23,9 +24,14 @@ const PostListItem = ({ post, index }: { post: IPost; index: number }) => {
         <div>
           <CardHeader>
             <div className="flex items-start justify-between w-full">
-              <h2 className="text-lg max-w-[75%] font-semibold">
-                {post.title}
-              </h2>
+              <div className="space-y-1">
+                <h2 className="text-lg max-w-[75%] font-semibold">
+                  {post.title}
+                </h2>
+                <p className="text-xs text-muted-foreground">
+                  {formatDate(post.createdAt)}
+                </p>
+              </div>
               <PostCategoryBadge category={post.category.name} />
             </div>
           </CardHeader>

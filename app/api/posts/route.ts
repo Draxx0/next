@@ -7,11 +7,29 @@ export const GET = async (
   req: NextRequest,
   res: NextResponse
 ): Promise<NextResponse> => {
-  const posts = await prisma.post.findMany({
-    include: {
-      category: true,
-    },
-  });
+  const orderBy = req.nextUrl.searchParams.get("orderBy") as "asc" | "desc";
+  const categoryId = req.nextUrl.searchParams.get("categoryId");
+
+  const posts = categoryId
+    ? await prisma.post.findMany({
+        where: {
+          categoryId: +categoryId,
+        },
+        include: {
+          category: true,
+        },
+        orderBy: {
+          createdAt: orderBy,
+        },
+      })
+    : await prisma.post.findMany({
+        orderBy: {
+          createdAt: orderBy,
+        },
+        include: {
+          category: true,
+        },
+      });
 
   if (!posts) {
     return NextResponse.json({

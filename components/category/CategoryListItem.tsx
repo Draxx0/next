@@ -37,7 +37,7 @@ const CategoryListItem = ({
           </div>
         </CardHeader>
         <CardContent>
-          <CardDescription className="space-y-4">
+          <div className="space-y-4">
             {category.posts.length > 0 ? (
               <>
                 <span>Les 3 derniers postes de cette catégorie :</span>
@@ -53,7 +53,7 @@ const CategoryListItem = ({
             ) : (
               <span>Aucun poste dans cette catégorie</span>
             )}
-          </CardDescription>
+          </div>
         </CardContent>
 
         <CardFooter>

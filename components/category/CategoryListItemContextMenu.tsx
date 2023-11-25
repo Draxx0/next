@@ -12,10 +12,10 @@ import {
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import ApiService from "@/utils/api.service";
 import { PencilLine, Trash } from "lucide-react";
-import PostUpdateModal from "../PostUpdateModal";
 import { ICategory } from "@/types";
 import { useToast } from "../ui/use-toast";
 import CategoryDeleteConfirmModal from "./CategoryDeleteConfirmModal";
+import CategoryUpdateModal from "./CategoryUpdateModal";
 
 const CategoryListItemContextMenu = ({
   category,
@@ -62,14 +62,14 @@ const CategoryListItemContextMenu = ({
       <ContextMenuTrigger>{children}</ContextMenuTrigger>
       <ContextMenuContent className="w-64">
         <ContextMenuItem inset className="cursor-pointer">
-          {/* <PostUpdateModal post={post}>
+          <CategoryUpdateModal category={category}>
             <span className="flex items-center w-full justify-between">
               Modifier
               <ContextMenuShortcut>
                 <PencilLine size={15} />
               </ContextMenuShortcut>
             </span>
-          </PostUpdateModal> */}
+          </CategoryUpdateModal>
         </ContextMenuItem>
         <ContextMenuSeparator />
         <ContextMenuItem

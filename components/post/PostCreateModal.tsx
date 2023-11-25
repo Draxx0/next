@@ -17,7 +17,7 @@ const PostCreateModal = () => {
     <AlertDialog>
       <AlertDialogTrigger asChild>
         <Button id="#create-post" variant={"secondary"}>
-          Créer un post
+          Créer un poste
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent className="min-w-[60%]">

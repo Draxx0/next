@@ -3,7 +3,6 @@ import { useEffect } from "react";
 const useDetectSpace = () => {
   const handleDetectSpace = (e: any) => {
     if (e.key === " ") {
-      console.log("space");
       e.stopPropagation();
     }
   };
