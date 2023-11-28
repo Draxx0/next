@@ -20,6 +20,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { IPost } from "@/types";
 import useDetectSpace from "@/hook/useDetectSpace";
+import Tiptap from "@/components/common/Tiptap";
 
 const formSchema = z.object({
   title: z.string().min(1).max(50),
@@ -149,37 +150,13 @@ const PostUpdateForm = ({
             <FormItem>
               <FormLabel>Contenu du post</FormLabel>
               <FormControl>
-                <Textarea
-                  required
-                  placeholder="Ecrire ici le contenu de votre poste..."
-                  {...field}
-                  onChange={(event) =>
-                    handleContentChange(event, field.onChange)
-                  }
+                <Tiptap
+                  characterCount={characterCount}
+                  defaultContent={post.content}
+                  setCharacterCount={setCharacterCount}
+                  onChange={(content) => field.onChange(content)}
                 />
               </FormControl>
-              <div className="flex justify-between items-center">
-                <FormDescription>
-                  Assurez-vous d&apos;avoir écrit moins de 500 caractères.
-                </FormDescription>
-                {characterCount > 0 ? (
-                  <div className="flex items-baseline gap-2 text-xs">
-                    <span className=" text-black/50">Caractères</span>
-                    <span
-                      className={` ${
-                        characterCount > 400
-                          ? "text-red-500/50"
-                          : characterCount > 200
-                          ? "text-yellow-500/50"
-                          : "text-black/50"
-                      }`}
-                    >
-                      {characterCount}/500
-                    </span>
-                  </div>
-                ) : null}
-              </div>
-
               <FormMessage />
             </FormItem>
           )}

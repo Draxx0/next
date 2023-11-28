@@ -23,10 +23,12 @@ import { FormDescription } from "../ui/form";
 const Tiptap = ({
   onChange,
   characterCount,
+  defaultContent,
   setCharacterCount,
 }: {
   onChange: (content: string) => void;
   characterCount: number;
+  defaultContent?: string;
   setCharacterCount: (value: number) => void;
 }) => {
   const editor = useEditor({
@@ -52,7 +54,7 @@ const Tiptap = ({
         },
       }),
     ],
-    content: "",
+    content: defaultContent || "",
     onUpdate: ({ editor }) => {
       console.log(editor.getHTML());
       onChange(editor.getHTML());
