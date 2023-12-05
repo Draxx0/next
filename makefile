@@ -16,7 +16,7 @@ reset:
 
 .PHONY: generate
 generate:
- pnpx prisma generate
+	pnpx prisma generate
 
 .PHONY: migrate
 migrate:
