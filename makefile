@@ -13,3 +13,11 @@ restart:
 .PHONY: reset
 reset:
 	docker system prune -a -f 
+
+.PHONY: generate
+generate:
+ pnpx prisma generate
+
+.PHONY: migrate
+migrate:
+	pnpx prisma migrate dev
