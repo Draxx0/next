@@ -12,8 +12,6 @@ import {
 import { Button } from "../ui/button";
 import PostUpdateForm from "./form/PostUpdateForm";
 import { IPost } from "@/types";
-import { ContextMenuShortcut } from "../ui/context-menu";
-import { PencilLine } from "lucide-react";
 
 const PostUpdateModal = ({
   post,

@@ -37,13 +37,13 @@ const Tiptap = ({
       Bold.configure({ HTMLAttributes: { class: "font-bold" } }),
       Underline,
       Strike,
-      HardBreak.extend({
-        addKeyboardShortcuts() {
-          return {
-            Enter: () => this.editor.commands.setHardBreak(),
-          };
-        },
-      }),
+      // HardBreak.extend({
+      //   addKeyboardShortcuts() {
+      //     return {
+      //       Enter: () => this.editor.commands.setHardBreak(),
+      //     };
+      //   },
+      // }),
       Heading.configure({
         levels: [1, 2, 3],
       }),
@@ -56,7 +56,6 @@ const Tiptap = ({
     ],
     content: defaultContent || "",
     onUpdate: ({ editor }) => {
-      console.log(editor.getHTML());
       onChange(editor.getHTML());
       setCharacterCount(editor.getText().length);
     },

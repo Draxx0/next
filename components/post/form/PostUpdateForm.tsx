@@ -1,25 +1,22 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "../../ui/textarea";
 import PostSelectCategories from "./PostSelectCategories";
 import ApiService from "@/utils/api.service";
 import { useToast } from "@/components/ui/use-toast";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { IPost } from "@/types";
-import useDetectSpace from "@/hook/useDetectSpace";
 import Tiptap from "@/components/common/Tiptap";
 
 const formSchema = z.object({
@@ -41,8 +38,6 @@ const PostUpdateForm = ({
     enabled: !!post,
     refetchOnWindowFocus: false,
   });
-
-  useDetectSpace();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -72,17 +67,10 @@ const PostUpdateForm = ({
     currentPost?.content.length || 0
   );
 
-  function handleContentChange(
-    event: React.ChangeEvent<HTMLTextAreaElement>,
-    onChange: (value: string) => void
-  ) {
-    const { value } = event.target;
-    setCharacterCount(value.length);
-    onChange(value);
-  }
-
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const isFormValid = await form.trigger();
+
+    console.log("submitted");
 
     if (!isFormValid) {
       toast({

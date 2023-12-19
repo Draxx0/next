@@ -1,5 +1,4 @@
 "use client";
-import { Card, CardContent, CardDescription, CardHeader } from "../ui/card";
 import { Skeleton } from "../ui/skeleton";
 
 const PostLoader = () => {
